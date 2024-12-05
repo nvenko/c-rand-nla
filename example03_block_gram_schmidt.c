@@ -34,9 +34,7 @@ int main(int argc, char *argv[]) {
   omp_set_num_threads(P);
   
   // Set sketching dimension
-  int k = ceil(2 * m * log(n) / log(m));
-  if (k > n)
-    k = m;
+  int k = ceil(m / log(m));
 
   // Set block size
   int s = 10;
