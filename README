@@ -1,0 +1,37 @@
+C implementation of randomized orthogonalization procedures. In particular, we implement randomized Cholesky QR (Balabanov, 2022), randomized Gram-Schmidt (Balabanov and Grigori, 2022) and block randomized Gram-Schmidt (Balabanov and Grigori, 2021).
+
+References:
+- Balabanov O. & Grigori L. (2022). Randomized Gram--Schmidt process with application to GMRES. SIAM Journal on Scientific Computing 44 (3), A1450-A1474.
+- Balabanov O. (2022). Randomized Cholesky QR factorizations. arXiv preprint arXiv:2210.09953.
+- Balabanov O. & Grigori L. (2021). Randomized block Gram-Schmidt process for solution of linear systems and eigenvalue problems. arXiv preprint arXiv:2111.14641.
+
+Installation instructions
+
+Install MKL
+Check installation is made in /opt/intel/oneapi
+If so, add export MKLROOT=opt/intel/oneapi 
+in ~/.bashrc and then,
+Then, source ~/.bashrc 
+
+Visit Link Line Advisor for oneMKL with following options
+Product: oneMKL 2024
+OS: Linux
+Programming language: C/C++
+Architecture: Intel(R) 64
+Dynamic or static linking: Static
+Interface layer: C API with 64-bit integer
+Threading layer: OpenMP threadin
+OpenMP library: GNU (libgomp)
+This suggests the following link line ($LinkLine):
+-m64  -Wl,--start-group ${MKLROOT}/lib/libmkl_intel_ilp64.a ${MKLROOT}/lib/libmkl_gnu_thread.a ${MKLROOT}/lib/libmkl_core.a -Wl,--end-group -lgomp -lpthread -lm -ldl
+with the following compiler options
+-DMKL_ILP64  -m64  -I"${MKLROOT}/include"
+
+
+Source the MKL environment script with 
+source $MKLROOT/setvars.sh
+
+Then compile as follows
+gcc -o main main.c $LinkLine
+Actually, you may need to redefine $MKLROOT to find headers and static libraries
+E.g., in Makefile, we use MKLROOT=/opt/intel/oneapi/mkl/2024.2
